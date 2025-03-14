@@ -4,3 +4,4 @@ export interface ApiResponse<T> {
     success: boolean;
     message?: string;
 }
+//# sourceMappingURL=commonTypes.d.ts.map

@@ -1,14 +1,12 @@
 {
     "compilerOptions": {
+        "outDir": "dist",
         "declaration": true,
         "emitDeclarationOnly": false,
-        "outDir": "dist",
+        "declarationMap": true,
+        "strict": true,
         "moduleResolution": "node",
-        "target": "ESNext",
-        "module": "CommonJS",
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "strict": true
+        "esModuleInterop": true
     },
     "include": [
         "src"
