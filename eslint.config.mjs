@@ -32,5 +32,5 @@ export default [...compat.extends("plugin:@typescript-eslint/recommended-type-ch
   }
 },
 {
-  ignores: ["eslint.config.mjs"],
+  ignores: ["eslint.config.mjs", "**/dist/**", ".yarn"],
 },];
