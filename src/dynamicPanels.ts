@@ -4,11 +4,7 @@ import { SupportedLanguageCode, tabOptions } from './common';
 
 export type Tab = keyof typeof tabOptions;
 
-type Position = 'one' | 'two' | 'three' | 'four' | 'five';
-
-type PositionOptions = {
-  [key in Position]: string;
-};
+export type Position = 'one' | 'two' | 'three' | 'four' | 'five';
 
 export type TabPanelPosition = {
   [key in Tab]: Position[];
@@ -25,12 +21,12 @@ export const availablePositionsByTab: TabPanelPosition = {
   talks: [],
 }
 
-type PanelDetail = {
+export type PanelDetail = {
   src?: string;
   enabled: boolean;
 }
 
-type PanelDetailByLanguage = {
+export type PanelDetailByLanguage = {
   [key in SupportedLanguageCode]?: PanelDetail;
 };
 
@@ -43,7 +39,7 @@ export type Panel = {
   src?: string;
 } & PanelDetailByLanguage
 
-type DynamicPanelsByLanguage = {
+export type DynamicPanelsByLanguage = {
   [key in Tab]?: Panel[];
 };
 

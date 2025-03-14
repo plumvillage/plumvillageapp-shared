@@ -1,7 +1,7 @@
 import { FieldValue, Timestamp } from '@firebase/firestore';
 import { SupportedLanguageCode, tabOptions } from './common';
 export type Tab = keyof typeof tabOptions;
-type Position = 'one' | 'two' | 'three' | 'four' | 'five';
+export type Position = 'one' | 'two' | 'three' | 'four' | 'five';
 export type TabPanelPosition = {
     [key in Tab]: Position[];
 };
@@ -10,11 +10,11 @@ export type TabPanelPosition = {
  * To support additional panels in the future, simply add them to the relevant array here.
  */
 export declare const availablePositionsByTab: TabPanelPosition;
-type PanelDetail = {
+export type PanelDetail = {
     src?: string;
     enabled: boolean;
 };
-type PanelDetailByLanguage = {
+export type PanelDetailByLanguage = {
     [key in SupportedLanguageCode]?: PanelDetail;
 };
 export type Panel = {
@@ -25,11 +25,10 @@ export type Panel = {
     endDate: Timestamp;
     src?: string;
 } & PanelDetailByLanguage;
-type DynamicPanelsByLanguage = {
+export type DynamicPanelsByLanguage = {
     [key in Tab]?: Panel[];
 };
 export type PanelsByTab = DynamicPanelsByLanguage & {
     updatedTimestamp?: FieldValue;
 };
-export {};
 //# sourceMappingURL=dynamicPanels.d.ts.map
