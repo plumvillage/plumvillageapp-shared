@@ -2,7 +2,8 @@
   "name": "plumvillageapp-shared",
   "version": "1.0.0",
   "description": "Shared types, constants, or util functions to support Plum Village App codebases",
-  "main": "src/index.ts",
+  "main": "dist/index",
+  "types": "dist/index.d.ts",
   "repository": "git@github.com:plumvillage/plumvillageapp-shared.git",
   "private": true,
   "scripts": {
