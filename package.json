@@ -1,0 +1,21 @@
+{
+  "name": "plumvillageapp-shared",
+  "version": "1.0.0",
+  "description": "Shared types, constants, or util functions to support Plum Village App codebases",
+  "main": "index.js",
+  "repository": "git@github.com:plumvillage/plumvillageapp-shared.git",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "prepare": "yarn build"
+  },
+  "packageManager": "yarn@4.7.0",
+  "devDependencies": {
+    "@stylistic/eslint-plugin-ts": "^4.2.0",
+    "eslint": "^9.22.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^18.0.0",
+    "eslint-plugin-prettier": "^5.2.3",
+    "typescript": "^5.8.2"
+  }
+}
