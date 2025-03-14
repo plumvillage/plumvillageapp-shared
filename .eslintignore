@@ -1,0 +1,26 @@
+# Ignore all test files
+**/*.test.js
+**/*.spec.js
+
+# Ignore all files in the "dist" and "build" directories
+dist/
+build/
+
+# Ignore node_modules (default behavior, but can be explicitly added)
+node_modules/
+
+# Ignore a specific file
+path/to/your/file.js
+
+# Ignore all JavaScript files in a specific folder
+src/legacy/**/*.js
+
+# Ignore config files
+.eslintrc.js
+eslint.config.mjs
+.prettierrc.js
+package-lock.json
+yarn.lock
+
+# Ignore all .md files
+*.md

@@ -6,9 +6,14 @@
         "declarationMap": true,
         "strict": true,
         "moduleResolution": "node",
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "paths": {
+            "@firebase/firestore": [
+                "./node_modules/@firebase/firestore"
+            ]
+        }
     },
     "include": [
-        "src"
+        "src/**/*",
     ]
 }
