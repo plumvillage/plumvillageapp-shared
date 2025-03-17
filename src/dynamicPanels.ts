@@ -26,6 +26,6 @@ export type DynamicPanelsByLanguage = {
   [key in Tab]?: Panel[];
 };
 
-export type PanelsByTab<FieldValueLike = undefined> = DynamicPanelsByLanguage & {
+export type PanelsByTab<FieldValueLike = unknown> = DynamicPanelsByLanguage & {
   updatedTimestamp?: FieldValueLike
 }

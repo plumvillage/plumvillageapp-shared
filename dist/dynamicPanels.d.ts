@@ -19,7 +19,7 @@ export type Panel<TimestampLike = unknown> = {
 export type DynamicPanelsByLanguage = {
     [key in Tab]?: Panel[];
 };
-export type PanelsByTab<FieldValueLike = undefined> = DynamicPanelsByLanguage & {
+export type PanelsByTab<FieldValueLike = unknown> = DynamicPanelsByLanguage & {
     updatedTimestamp?: FieldValueLike;
 };
 //# sourceMappingURL=dynamicPanels.d.ts.map
