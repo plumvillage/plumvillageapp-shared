@@ -8,18 +8,18 @@ export type PanelDetail = {
 export type PanelDetailByLanguage<SupportedLanguageCodeType extends string | number | symbol> = {
     [key in SupportedLanguageCodeType]?: PanelDetail;
 };
-export type Panel<T extends string | number | symbol, TimestampLike = unknown> = {
+export type Panel<SupportedLanguageCodeType extends string | number | symbol, TimestampLike = unknown> = {
     key: number;
     position: Position;
     enabled: boolean;
     startDate: TimestampLike;
     endDate: TimestampLike;
     src?: string;
-} & PanelDetailByLanguage<T>;
-export type DynamicPanelsByLanguage<T extends string | number | symbol> = {
-    [key in Tab]?: Panel<T>[];
+} & PanelDetailByLanguage<SupportedLanguageCodeType>;
+export type DynamicPanelsByLanguage<SupportedLanguageCodeType extends string | number | symbol> = {
+    [key in Tab]?: Panel<SupportedLanguageCodeType>[];
 };
-export type PanelsByTab<T extends string | number | symbol, FieldValueLike = unknown> = DynamicPanelsByLanguage<T> & {
+export type PanelsByTab<SupportedLanguageCodeType extends string | number | symbol, FieldValueLike = unknown> = DynamicPanelsByLanguage<SupportedLanguageCodeType> & {
     updatedTimestamp?: FieldValueLike;
 };
 //# sourceMappingURL=dynamicPanels.d.ts.map
