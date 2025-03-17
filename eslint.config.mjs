@@ -28,7 +28,6 @@ export default [...compat.extends("plugin:@typescript-eslint/recommended-type-ch
 
   rules: {
     "@stylistic/ts/indent": ["error", 2],
-    'prettier/prettier': 0,
   }
 },
 {
