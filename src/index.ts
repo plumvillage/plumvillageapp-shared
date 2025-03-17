@@ -1,3 +1,3 @@
-export * from './common';
-export * from './dynamicPanels';
-export * from './firebase';
+export * from './types/common';
+export * from './types/dynamicPanels';
+export * from './types/firebase';
