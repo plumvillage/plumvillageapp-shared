@@ -1,4 +1,9 @@
-import { tabOptions } from './common';
+export declare const tabOptions: {
+    home: string;
+    meditations: string;
+    resources: string;
+    talks: string;
+};
 export type Tab = keyof typeof tabOptions;
 export type Position = 'one' | 'two' | 'three' | 'four' | 'five';
 export type PanelDetail = {
