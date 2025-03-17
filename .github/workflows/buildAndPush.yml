@@ -1,0 +1,48 @@
+name: Build and Push Dist
+
+on:
+  push:
+    branches:
+      - main # Trigger on pushes or merges to the main branch
+    paths:
+      - 'src/**'            # Source code
+      - 'package.json'      # Include package.json if dependencies change
+      - 'yarn.lock'         # Include yarn.lock to trigger on lockfile changes
+  workflow_dispatch: # Allows manual triggering from GitHub UI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Ensure full history for committing
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Node.js version
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build project
+        run: yarn build
+
+      - name: Commit and push dist
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+          # Force-add the dist directory, even though it's in .gitignore
+          git add -f dist
+
+          # Commit and push only if there are changes
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update dist [skip ci]"
+            git push
+          else
+            echo "No changes in dist to commit."
+          fi
