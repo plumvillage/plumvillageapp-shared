@@ -13,9 +13,7 @@ export type PanelDetailByLanguage = {
   [key in SupportedLanguageCode]?: PanelDetail;
 };
 
-export type TimestampLike = unknown;
-
-export type Panel = {
+export type Panel<TimestampLike = unknown> = {
   key: number;
   position: Position;
   enabled: boolean;
@@ -28,8 +26,6 @@ export type DynamicPanelsByLanguage = {
   [key in Tab]?: Panel[];
 };
 
-export type FieldValueLike = unknown;
-
-export type PanelsByTab = DynamicPanelsByLanguage & {
+export type PanelsByTab<FieldValueLike = undefined> = DynamicPanelsByLanguage & {
   updatedTimestamp?: FieldValueLike
 }
