@@ -26,7 +26,7 @@ export type DynamicPanelsByLanguage<SupportedLanguageCodeType extends string | n
   [key in Tab]?: Panel<SupportedLanguageCodeType>[];
 };
 
-export type PanelsByTab<SupportedLanguageCodeType extends string | number | symbol, FieldValueLike = unknown> = 
-DynamicPanelsByLanguage<SupportedLanguageCodeType> & {
-  updatedTimestamp?: FieldValueLike
-}
+export type PanelsByTab<SupportedLanguageCodeType extends string | number | symbol, FieldValueLike = unknown> =
+  DynamicPanelsByLanguage<SupportedLanguageCodeType> & {
+    updatedTimestamp?: FieldValueLike
+  }
