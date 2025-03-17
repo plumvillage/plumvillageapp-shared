@@ -4,5 +4,4 @@ export declare const tabOptions: {
     resources: string;
     talks: string;
 };
-export type SupportedLanguageCode = string;
 //# sourceMappingURL=common.d.ts.map

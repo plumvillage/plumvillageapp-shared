@@ -3,6 +3,4 @@ export const tabOptions = {
   meditations: 'Meditations',
   resources: 'Resources',
   talks: 'Talks',
-};  
-
-export type SupportedLanguageCode = string;
+};
