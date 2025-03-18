@@ -60,10 +60,10 @@ jobs:
 
       # Create a GitHub release (automatically creates a tag)
       - name: Create GitHub release
-        uses: gh-actions/create-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ env.VERSION }}
-          release_name: "Release v${{ env.VERSION }}"
+          name: "Release v${{ env.VERSION }}"
           draft: false
           prerelease: false
           body: |
