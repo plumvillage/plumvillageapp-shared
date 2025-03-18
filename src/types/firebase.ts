@@ -20,7 +20,3 @@ export const firestoreCollectionDocs = {
     tabs: 'tabs',
   }
 };
-
-export type dymmy = {
-  x: 'y'
-}

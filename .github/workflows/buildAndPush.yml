@@ -82,7 +82,7 @@ jobs:
       - name: Clean up .gitignore
         run: |
           # Remove temporary lines for dist and dist/types from .gitignore
-          sed -i '/!dist/d' .gitignore
+          sed -i "" '/\!dist/d' .gitignore
           
           # Commit the changes (if any) with a "skip ci" tag
           git add .gitignore
