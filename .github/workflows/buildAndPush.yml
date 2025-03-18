@@ -3,7 +3,12 @@ name: Build and Release
 on:
   push:
     branches:
-      - main
+      - main # Trigger on pushes or merges to the main branch
+    paths:
+        - 'src/**'            # Source code
+        - 'package.json'      # Include package.json if dependencies change
+        - 'yarn.lock'         # Include yarn.lock to trigger on lockfile changes
+  workflow_dispatch: # Allows manual triggering from GitHub UI
 
 jobs:
   build-and-release:
@@ -11,14 +16,16 @@ jobs:
 
     steps:
       # Checkout the code
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Ensure full history for committing
 
       # Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: '22' # Node.js version
           cache: 'yarn'
 
       # Install dependencies
@@ -26,7 +33,7 @@ jobs:
         run: yarn install --immutable
 
       # Build the project
-      - name: Build the project
+      - name: Build project
         run: yarn build
 
       # Push changes (including dist/types) and create a release
