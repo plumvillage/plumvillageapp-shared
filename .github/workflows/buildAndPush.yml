@@ -38,8 +38,8 @@ jobs:
       - name: Temporarily unignore dist and dist/types for release
         run: |
           # Temporarily remove dist and dist/types from .gitignore
-          echo "!dist" >> .gitignore
-          echo "!dist/types" >> .gitignore
+          echo "\!dist" >> .gitignore
+          echo "\!dist/types" >> .gitignore
           
           # Stage and commit the dist and dist/types changes
           git add -f dist dist/types
