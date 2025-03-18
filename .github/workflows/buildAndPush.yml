@@ -1,37 +1,47 @@
-name: Build and Push Dist
+name: Build and Release
 
 on:
   push:
     branches:
-      - main # Trigger on pushes or merges to the main branch
-    paths:
-      - 'src/**'            # Source code
-      - 'package.json'      # Include package.json if dependencies change
-      - 'yarn.lock'         # Include yarn.lock to trigger on lockfile changes
-  workflow_dispatch: # Allows manual triggering from GitHub UI
+      - main
 
 jobs:
-  build:
+  build-and-release:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      # Checkout the code
+      - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Ensure full history for committing
 
+      # Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22' # Node.js version
+          node-version: 22
+          cache: 'yarn'
 
+      # Install dependencies
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
-      - name: Build project
+      # Build the project
+      - name: Build the project
         run: yarn build
 
-      - name: Commit and push dist
+      # Create a new version bump and tag
+      - name: Bump version
+        run: |
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          NEW_VERSION=$(node -p "require('semver').inc('$CURRENT_VERSION', 'minor')")
+          echo "Bumping version from $CURRENT_VERSION to $NEW_VERSION"
+          
+          # Update package.json with the new version
+          npm version $NEW_VERSION --no-git-tag-version
+          echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
+
+      # Push changes (including dist/types) and create a release
+      - name: Commit and push changes
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
@@ -41,8 +51,21 @@ jobs:
 
           # Commit and push only if there are changes
           if ! git diff --cached --quiet; then
-            git commit -m "chore: update dist [skip ci]"
+            git commit -m "chore: release v${{ env.VERSION }} [skip ci]"
             git push
           else
             echo "No changes in dist to commit."
+            exit 0  # Exit the job early if no changes
           fi
+
+      # Create a GitHub release (automatically creates a tag)
+      - name: Create GitHub release
+        uses: gh-actions/create-release@v1
+        with:
+          tag_name: v${{ env.VERSION }}
+          release_name: "Release v${{ env.VERSION }}"
+          draft: false
+          prerelease: false
+          body: |
+            Release of version ${{ env.VERSION }}.
+
