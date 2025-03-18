@@ -54,13 +54,15 @@ jobs:
             git add package.json
             git commit -m "chore: release v${{ env.VERSION }} [skip ci]"
             git push
+            echo "changes=true" >> $GITHUB_ENV  # Set a variable to indicate changes were made
           else
             echo "No changes in dist to commit."
-            exit 0  # Exit the job early if no changes
+            echo "changes=false" >> $GITHUB_ENV  # Set a variable to indicate no changes
           fi
 
       # Create a GitHub release (automatically creates a tag)
       - name: Create GitHub release
+        if: env.changes == 'true'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ env.VERSION }}
@@ -71,4 +73,8 @@ jobs:
             Release of version ${{ env.VERSION }}.
 
 
-            
+      # Step to skip execution if no changes were made
+      - name: No changes detected
+        if: env.changes == 'false'
+        run: |
+          echo "No changes were made, skipping further steps."
