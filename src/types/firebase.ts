@@ -21,4 +21,4 @@ export const firestoreCollectionDocs = {
   }
 };
 
-export const testAndRemove = 'test'
+export const testAndRemove = 'remove'
