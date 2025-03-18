@@ -10,63 +10,77 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Checkout the code
-    - name: Checkout code
-      uses: actions/checkout@v4
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    # Set up Node.js
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 22
-        cache: 'yarn'
+      # Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'yarn'
 
-    # Install dependencies
-    - name: Install dependencies
-      run: yarn install --frozen-lockfile
+      # Install dependencies
+      - name: Install dependencies
+        run: yarn install --immutable
 
-    # Bump the minor version in package.json
-    - name: Bump minor version
-      run: |
-        CURRENT_VERSION=$(node -p "require('./package.json').version")
-        NEW_VERSION=$(node -p "require('semver').inc('$CURRENT_VERSION', 'minor')")
-        echo "Bumping version from $CURRENT_VERSION to $NEW_VERSION"
+      # Build the project
+      - name: Build the project
+        run: yarn build
 
-        # Update package.json with the new version
-        npm version $NEW_VERSION --no-git-tag-version
-        echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
+      # Temporarily unignore dist and dist/types for release
+      - name: Temporarily unignore dist and dist/types for release
+        run: |
+          # Temporarily remove dist and dist/types from .gitignore
+          echo "!dist" >> .gitignore
+          echo "!dist/types" >> .gitignore
+          
+          # Stage and commit the dist and dist/types changes
+          git add -f dist dist/types
+          git commit -m "chore: include dist and dist/types for release"
 
-    # Build the project
-    - name: Build the project
-      run: yarn build
+      # Bump version in package.json
+      - name: Bump version
+        run: |
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          NEW_VERSION=$(node -p "require('semver').inc('$CURRENT_VERSION', 'minor')")
+          echo "Bumping version from $CURRENT_VERSION to $NEW_VERSION"
+          
+          # Update package.json with the new version
+          npm version $NEW_VERSION --no-git-tag-version
+          echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
 
-    # Commit and push dist + version bump
-    - name: Commit and push dist
-      run: |
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
+      # Push changes and tag
+      - name: Commit and push changes
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          
+          # Add changes (including dist and dist/types) and commit them
+          git add -f dist dist/types package.json
+          git commit -m "chore: release v${{ env.VERSION }} [skip ci]"
+          git tag "v${{ env.VERSION }}"
+          git push origin main --tags
 
-        # Add dist and package.json
-        git add -f dist package.json
-        git commit -m "chore: release v${{ env.VERSION }} [skip ci]"
-        git tag "v${{ env.VERSION }}"
-        git push origin main --tags
+      # Create a GitHub release with the new version tag
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.VERSION }}
+          name: "Release v${{ env.VERSION }}"
+          body: "📦 Automated release of version v${{ env.VERSION }}"
+          draft: false
+          prerelease: false
 
-    # Create a tarball with only dist
-    - name: Package dist folder
-      run: |
-        mkdir -p release
-        tar -czf release/plumvillage-shared-v${{ env.VERSION }}.tar.gz -C dist .
-
-    # Upload the tarball as a release asset
-    - name: Create GitHub release
-      uses: softprops/action-gh-release@v2
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag_name: "v${{ env.VERSION }}"
-        name: "Release v${{ env.VERSION }}"
-        body: "📦 Automated release of version v${{ env.VERSION }}"
-        draft: false
-        prerelease: false
-        files: |
-          release/plumvillage-shared-v${{ env.VERSION }}.tar.gz
+      # Clean up: Remove the temporary changes to .gitignore
+      - name: Clean up .gitignore
+        run: |
+          # Remove temporary lines for dist and dist/types from .gitignore
+          sed -i '/!dist/d' .gitignore
+          sed -i '/!dist\/types/d' .gitignore
+          
+          # Commit the changes (if any) with a "skip ci" tag
+          git add .gitignore
+          git commit -m "fix: remove temporary dist unignore [skip ci]"
+          git push
