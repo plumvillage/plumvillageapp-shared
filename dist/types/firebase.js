@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.firestoreCollectionDocs = exports.FirestoreCollection = void 0;
+exports.test = exports.firestoreCollectionDocs = exports.FirestoreCollection = void 0;
 var FirestoreCollection;
 (function (FirestoreCollection) {
     FirestoreCollection["CATEGORIES"] = "categories";
@@ -23,3 +23,4 @@ exports.firestoreCollectionDocs = {
         tabs: 'tabs',
     }
 };
+exports.test = '';
