@@ -1,96 +1,48 @@
-# name: Build and Release
+name: Build and Push Dist
 
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main # Trigger on pushes or merges to the main branch
+    paths:
+      - 'src/**'            # Source code
+      - 'package.json'      # Include package.json if dependencies change
+      - 'yarn.lock'         # Include yarn.lock to trigger on lockfile changes
+  workflow_dispatch: # Allows manual triggering from GitHub UI
 
-# jobs:
-#   build-and-release:
-#     runs-on: ubuntu-latest
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       # Checkout the code
-#       - name: Checkout code
-#         uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Ensure full history for committing
 
-#       # Set up Node.js
-#       - name: Set up Node.js
-#         uses: actions/setup-node@v4
-#         with:
-#           node-version: 22
-#           cache: 'yarn'
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22' # Node.js version
 
-#       # Install dependencies
-#       - name: Install dependencies
-#         run: yarn install --immutable
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
 
-#       # Build the project
-#       - name: Build the project
-#         run: yarn build
+      - name: Build project
+        run: yarn build
 
-#       - name: Set Git user
-#         run: |
-#           git config --global user.name "GitHub Actions"
-#           git config --global user.email "actions@github.com"
+      - name: Commit and push dist
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
 
-#       # Temporarily unignore dist and dist/types for release
-#       - name: Temporarily unignore dist and dist/types for release
-#         run: |
-#           # Temporarily remove dist and dist/types from .gitignore
-#           echo "\!dist" >> .gitignore
-#           echo "\!dist/types" >> .gitignore
-          
-#           # Stage and commit the dist and dist/types changes
-#           git add -f dist dist/types .gitignore
-#           git commit -m "chore: include dist and dist/types for release"
+          # Force-add the dist directory, even though it's in .gitignore
+          git add -f dist
 
-#       # Bump version in package.json
-#       - name: Bump version
-#         run: |
-#           CURRENT_VERSION=$(node -p "require('./package.json').version")
-#           NEW_VERSION=$(node -p "require('semver').inc('$CURRENT_VERSION', 'minor')")
-#           echo "Bumping version from $CURRENT_VERSION to $NEW_VERSION"
-          
-#           # Update package.json with the new version
-#           npm version $NEW_VERSION --no-git-tag-version
-#           echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
-
-#       # Push changes and tag
-#       - name: Commit and push changes
-#         run: |
-#           git config user.name "GitHub Actions"
-#           git config user.email "actions@github.com"
-          
-#           # Add changes (including dist and dist/types) and commit them
-#           git add -f dist dist/types package.json
-#           git commit -m "chore: release v${{ env.VERSION }} [skip ci]"
-#           git tag "v${{ env.VERSION }}"
-#           git push origin main --tags
-
-#       # Create a GitHub release with the new version tag
-#       - name: Create GitHub release
-#         uses: softprops/action-gh-release@v2
-#         with:
-#           tag_name: v${{ env.VERSION }}
-#           name: "Release v${{ env.VERSION }}"
-#           body: "📦 Automated release of version v${{ env.VERSION }}"
-#           draft: false
-#           prerelease: false
-
-#       # Clean up: Remove the temporary changes to .gitignore
-#       - name: Clean up .gitignore
-#         run: |
-#           run: |
-#           # Remove temporary lines for dist and dist/types from .gitignore
-#           sed -i '/!dist/d' .gitignore
-#           sed -i '/!dist\/types/d' .gitignore
-          
-#           # Check if there are any changes to .gitignore
-#           if ! git diff --quiet .gitignore; then
-#             git add .gitignore
-#             git commit -m "fix: remove temporary dist unignore [skip ci]"
-#             git push
-#           else
-#             echo "No changes in .gitignore to commit."
-#           fi
+          # Commit and push only if there are changes
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update dist [skip ci]"
+            git push
+          else
+            echo "No changes in dist to commit."
+          fi
