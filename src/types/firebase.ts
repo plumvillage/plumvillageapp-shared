@@ -20,4 +20,3 @@ export const firestoreCollectionDocs = {
     tabs: 'tabs',
   }
 };
-export const test = ''
