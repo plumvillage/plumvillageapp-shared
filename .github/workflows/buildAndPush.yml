@@ -36,7 +36,7 @@ jobs:
           git config user.email "actions@github.com"
 
           # Force-add the dist directory, even though it's in .gitignore
-          git add -f dist
+          git add -f dist package.json
 
           # Commit and push only if there are changes
           if ! git diff --cached --quiet; then
@@ -48,7 +48,6 @@ jobs:
             # Update package.json with the new version
             npm version $NEW_VERSION --no-git-tag-version
             echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
-            git add package.json
             git commit -m "chore: release v${{ env.VERSION }} [skip ci]"
             git push
             echo "changes=true" >> $GITHUB_ENV  # Set a variable to indicate changes were made
