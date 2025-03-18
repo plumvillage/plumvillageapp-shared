@@ -51,6 +51,7 @@ jobs:
 
           # Commit and push only if there are changes
           if ! git diff --cached --quiet; then
+            git add package.json
             git commit -m "chore: release v${{ env.VERSION }} [skip ci]"
             git push
           else
