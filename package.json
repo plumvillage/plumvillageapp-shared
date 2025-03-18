@@ -1,6 +1,6 @@
 {
   "name": "plumvillageapp-shared",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "Shared types, constants, or util functions to support Plum Village App codebases",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
