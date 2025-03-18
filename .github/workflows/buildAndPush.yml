@@ -42,7 +42,7 @@ jobs:
           echo "\!dist/types" >> .gitignore
           
           # Stage and commit the dist and dist/types changes
-          git add -f dist dist/types
+          git add -f dist dist/types .gitignore
           git commit -m "chore: include dist and dist/types for release"
 
       # Bump version in package.json
