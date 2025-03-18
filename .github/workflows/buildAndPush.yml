@@ -55,6 +55,7 @@ jobs:
             # Update package.json with the new version
             npm version $NEW_VERSION --no-git-tag-version
             echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
+            git add package.json
             git commit -m "chore: release v${{ env.VERSION }} [skip ci]"
             git push
             echo "changes=true" >> $GITHUB_ENV  # Set a variable to indicate changes were made
