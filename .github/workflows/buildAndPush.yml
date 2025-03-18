@@ -1,48 +1,72 @@
-name: Build and Push Dist
+name: Build and Release
 
 on:
   push:
     branches:
-      - main # Trigger on pushes or merges to the main branch
-    paths:
-      - 'src/**'            # Source code
-      - 'package.json'      # Include package.json if dependencies change
-      - 'yarn.lock'         # Include yarn.lock to trigger on lockfile changes
-  workflow_dispatch: # Allows manual triggering from GitHub UI
+      - main
 
 jobs:
-  build:
+  build-and-release:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Ensure full history for committing
+    # Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22' # Node.js version
+    # Set up Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+        cache: 'yarn'
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+    # Install dependencies
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
 
-      - name: Build project
-        run: yarn build
+    # Bump the minor version in package.json
+    - name: Bump minor version
+      run: |
+        CURRENT_VERSION=$(node -p "require('./package.json').version")
+        NEW_VERSION=$(node -p "require('semver').inc('$CURRENT_VERSION', 'minor')")
+        echo "Bumping version from $CURRENT_VERSION to $NEW_VERSION"
 
-      - name: Commit and push dist
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
+        # Update package.json with the new version
+        npm version $NEW_VERSION --no-git-tag-version
+        echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
 
-          # Force-add the dist directory, even though it's in .gitignore
-          git add -f dist
+    # Build the project
+    - name: Build the project
+      run: yarn build
 
-          # Commit and push only if there are changes
-          if ! git diff --cached --quiet; then
-            git commit -m "chore: update dist [skip ci]"
-            git push
-          else
-            echo "No changes in dist to commit."
-          fi
+    # Commit and push dist + version bump
+    - name: Commit and push dist
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+
+        # Add dist and package.json
+        git add -f dist package.json package-lock.json
+        git commit -m "chore: release v${{ env.VERSION }} [skip ci]"
+        git tag "v${{ env.VERSION }}"
+        git push origin main --tags
+
+    # Create a tarball with only dist
+    - name: Package dist folder
+      run: |
+        mkdir -p release
+        tar -czf release/plumvillage-shared-v${{ env.VERSION }}.tar.gz -C dist .
+
+    # Upload the tarball as a release asset
+    - name: Create GitHub release
+      uses: softprops/action-gh-release@v2
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag_name: "v${{ env.VERSION }}"
+        name: "Release v${{ env.VERSION }}"
+        body: "📦 Automated release of version v${{ env.VERSION }}"
+        draft: false
+        prerelease: false
+        files: |
+          release/plumvillage-shared-v${{ env.VERSION }}.tar.gz
