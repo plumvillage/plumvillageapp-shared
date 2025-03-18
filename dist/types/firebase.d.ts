@@ -19,5 +19,4 @@ export declare const firestoreCollectionDocs: {
         tabs: string;
     };
 };
-export declare const testAndRemove = "test";
 //# sourceMappingURL=firebase.d.ts.map
