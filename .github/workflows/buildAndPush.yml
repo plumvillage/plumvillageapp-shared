@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - main # Trigger on pushes or merges to the main branch
-    paths:
-        - 'src/**'            # Source code
-        - 'package.json'      # Include package.json if dependencies change
-        - 'yarn.lock'         # Include yarn.lock to trigger on lockfile changes
   workflow_dispatch: # Allows manual triggering from GitHub UI
 
 jobs:
