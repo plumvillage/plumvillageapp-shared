@@ -43,30 +43,22 @@ jobs:
           git config user.email "actions@github.com"
 
           # Force-add the dist directory, even though it's in .gitignore
-          git add -f dist package.json
+          git add -f dist
 
-          # Commit and push only if there are changes
-          if ! git diff --cached --quiet; then
-            # Create a new version bump and tag
-            CURRENT_VERSION=$(node -p "require('./package.json').version")
-            NEW_VERSION=$(node -p "require('semver').inc('$CURRENT_VERSION', 'minor')")
-            echo "Bumping version from $CURRENT_VERSION to $NEW_VERSION"
-          
-            # Update package.json with the new version
-            npm version $NEW_VERSION --no-git-tag-version
-            echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
-            git add package.json
-            git commit -m "chore: release v${{ env.VERSION }} [skip ci]"
-            git push
-            echo "changes=true" >> $GITHUB_ENV  # Set a variable to indicate changes were made
-          else
-            echo "No changes in dist to commit."
-            echo "changes=false" >> $GITHUB_ENV  # Set a variable to indicate no changes
-          fi
+          # Create a new version bump and tag
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          NEW_VERSION=$(node -p "require('semver').inc('$CURRENT_VERSION', 'minor')")
+          echo "Bumping version from $CURRENT_VERSION to $NEW_VERSION"
+        
+          # Update package.json with the new version
+          npm version $NEW_VERSION --no-git-tag-version
+          echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
+          git add package.json
+          git commit -m "chore: release v${{ env.VERSION }} [skip ci]"
+          git push
 
       # Create a GitHub release (automatically creates a tag)
       - name: Create GitHub release
-        if: env.changes == 'true'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ env.VERSION }}
@@ -75,10 +67,3 @@ jobs:
           prerelease: false
           body: |
             Release of version ${{ env.VERSION }}.
-
-
-      # Step to skip execution if no changes were made
-      - name: No changes detected
-        if: env.changes == 'false'
-        run: |
-          echo "No changes were made, skipping further steps."
