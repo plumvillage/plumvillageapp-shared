@@ -19,4 +19,7 @@ export declare const firestoreCollectionDocs: {
         tabs: string;
     };
 };
+export type dymmy = {
+    x: 'y';
+};
 //# sourceMappingURL=firebase.d.ts.map
