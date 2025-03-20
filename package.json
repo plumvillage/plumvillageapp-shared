@@ -1,11 +1,20 @@
 {
-  "name": "plumvillageapp-shared",
+  "name": "@plumvillage/plumvillageapp-shared",
   "version": "1.2.0",
-  "description": "Shared types, constants, or util functions to support Plum Village App codebases",
+  "description": "Shared types, constants and util functions to support Plum Village App codebases",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "repository": "git@github.com:plumvillage/plumvillageapp-shared.git",
-  "private": true,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plumvillage/plumvillageapp-shared.git"
+  },
   "scripts": {
     "build": "tsc",
     "prepare": "yarn build"
@@ -19,6 +28,7 @@
     "@typescript-eslint/parser": "^8.26.1",
     "eslint": "^9.22.0",
     "eslint-plugin-prettier": "^5.2.3",
+    "prettier": "^3.5.3",
     "typescript": "^5.8.2"
   }
 }
