@@ -53,6 +53,17 @@ jobs:
           git commit -m "chore: release v${{ env.VERSION }} [skip ci]"
           git push
 
+      # Create the .npmrc file with GitHub authentication for GitHub Packages
+      - name: Create .npmrc for GitHub Packages
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
+
+      # Publish the package to GitHub Packages
+      - name: Publish to GitHub Packages
+        run: |
+          echo "Publishing version v${{ env.VERSION }} to GitHub Packages"
+          npm publish
+
       # Create a GitHub release (automatically creates a tag)
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
