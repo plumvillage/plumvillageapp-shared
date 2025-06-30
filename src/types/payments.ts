@@ -98,7 +98,7 @@ type TimestampStatic = {
 
 export const loadStripePaymentRecord = (id: string, chargeData: StripeChargeData, Timestamp: TimestampStatic): PaymentObj => ({
   id,
-  paymentDate: Timestamp.fromMillis(chargeData.created).toDate().toISOString(),
+  paymentDate: Timestamp.fromMillis(chargeData.created * 1000).toDate().toISOString(),
   email: chargeData.billing_details.email || chargeData.invoice?.customer_email || chargeData.receipt_email || '',
   customerName: chargeData.billing_details.name || chargeData.invoice?.customer_name || '',
   countryCode: chargeData.billing_details.address.country,
