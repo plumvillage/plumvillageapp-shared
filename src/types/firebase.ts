@@ -9,6 +9,8 @@ export enum FirestoreCollection {
   FILES = 'files',
   FOLDERS = 'folders',
   FOLDER_THUMBS = 'folder-thumbs',
+  FOLDER_GROUPS = 'folder-groups',
+  ITEM_GROUPS = 'item-groups',
   NEWS = 'news',
   METADATA = 'metadata', // sub-collection of docs
   QUOTES = 'quotes',
