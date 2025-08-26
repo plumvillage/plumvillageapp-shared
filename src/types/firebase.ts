@@ -18,6 +18,7 @@ export enum FirestoreCollection {
   RETREATS = 'retreats',
   ROLES = 'roles',
   SCHEDULED_QUOTES = 'scheduledQuotes',
+  SHORT_LINKS = 'shortLinks',
   SUBTITLES = 'subtitles', // sub-collection of docs
   TOPICS = 'topics',
   TOPICS_POTENTIAL = 'topics-potential',
