@@ -7,14 +7,14 @@ type GroupBase<SupportedLanguageCodeType extends string | number | symbol> = {
 
 export type FolderGroup<SupportedLanguageCodeType extends string | number | symbol, TimestampLike = unknown> = {
   id: string;
-  folders: Record<SupportedLanguageCodeType, string>; // langCode -> folderId
+  folders: { [K in SupportedLanguageCodeType]?: string }; // langCode -> folderId
   createdAt: TimestampLike;
   updatedAt: TimestampLike;
 } & GroupBase<SupportedLanguageCodeType>;
 
 export type ItemGroup<SupportedLanguageCodeType extends string | number | symbol, TimestampLike = unknown> = {
   id: string;
-  items: Record<SupportedLanguageCodeType, string>; // langCode -> itemId
+  items: { [K in SupportedLanguageCodeType]?: string }; // langCode -> itemId
   createdAt: TimestampLike;
   updatedAt: TimestampLike;
 } & GroupBase<SupportedLanguageCodeType>;
