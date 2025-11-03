@@ -20,11 +20,13 @@ export type ItemGroup<SupportedLanguageCodeType extends string | number | symbol
 } & GroupBase<SupportedLanguageCodeType>;
 
 export type ItemRedirect<TimestampLike = unknown> = {
+  id: string; // the old slug being redirected from
   toSlug: string;
   createdAt: TimestampLike;
 };
 
 export type FolderRedirect<TimestampLike = unknown> = {
+  id: string; // the old slug being redirected from
   toSlug: string;
   createdAt: TimestampLike;
 };
