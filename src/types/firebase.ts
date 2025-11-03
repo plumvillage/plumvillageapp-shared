@@ -4,21 +4,28 @@ export enum FirestoreCollection {
   CONTRIBUTOR_STRINGS = 'strings', // sub-collection of contributors
   CONTRIBUTORS = 'contributors',
   DOCS = 'docs',
+  DONOR_NOTES = 'donor-notes',
   DYNAMIC_PANELS = 'dynamicPanels',
   EXTRAS = 'extras',
   FILES = 'files',
+  FOLDER_CONDITIONS = 'folderConditions', // sub-collection of folders
+  FOLDER_REDIRECTS = 'folderRedirects',
   FOLDERS = 'folders',
   FOLDER_THUMBS = 'folder-thumbs',
   FOLDER_GROUPS = 'folder-groups',
   ITEM_GROUPS = 'item-groups',
+  ITEM_REDIRECTS = 'itemRedirects',
   NEWS = 'news',
   METADATA = 'metadata', // sub-collection of docs
+  PAYPAL_TRANSACTIONS = 'paypal-transactions',
   QUOTES = 'quotes',
   REMOVALS = 'removals',
   RETREATS = 'retreats',
   ROLES = 'roles',
   SCHEDULED_QUOTES = 'scheduledQuotes',
+  SETTINGS = 'settings',
   SHORT_LINKS = 'shortLinks',
+  STRIPE_CHARGES = 'stripe-charges',
   SUBTITLES = 'subtitles', // sub-collection of docs
   TOPICS = 'topics',
   TOPICS_POTENTIAL = 'topics-potential',
@@ -33,6 +40,11 @@ export enum FirestoreCollection {
 }
 
 export const firestoreCollectionDocs = {
+  docs: {
+    metadata: {
+      metadata: 'metadata',
+    },
+  },
   dynamicPanels: {
     tabs: 'tabs',
   },
@@ -44,6 +56,11 @@ export const firestoreCollectionDocs = {
   },
   settings: {
     settings: 'settings',
+  },
+  transients: {
+    authors: 'authors',
+    docSlugs: 'doc-slugs',
+    folderSlugs: 'folder-slugs',
   },
   updates: {
     updates: 'updates',
