@@ -18,3 +18,13 @@ export type ItemGroup<SupportedLanguageCodeType extends string | number | symbol
   createdAt: TimestampLike;
   updatedAt: TimestampLike;
 } & GroupBase<SupportedLanguageCodeType>;
+
+export type ItemRedirect<TimestampLike = unknown> = {
+  toSlug: string;
+  createdAt: TimestampLike;
+};
+
+export type FolderRedirect<TimestampLike = unknown> = {
+  toSlug: string;
+  createdAt: TimestampLike;
+};
