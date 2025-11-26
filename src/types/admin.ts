@@ -3,6 +3,7 @@ export const adminPermissions = [
   'edit_content',
   'manage_users',
   'app_testing',
+  'edit_data',
 ] as const;
 
 export type AdminPermission = typeof adminPermissions[number];
@@ -13,6 +14,7 @@ const adminPermissionMap: { [key in AdminPermission]: true } = {
   edit_content: true,
   manage_users: true,
   app_testing: true,
+  edit_data: true,
 };
 
 export function isAdminPermission(value: unknown): value is AdminPermission {
