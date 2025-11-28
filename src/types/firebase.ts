@@ -8,6 +8,7 @@ export enum FirestoreCollection {
   DYNAMIC_PANELS = 'dynamicPanels',
   EXTRAS = 'extras',
   FILES = 'files',
+  FUNDRAISERS = 'fundraisers',
   FOLDER_CONDITIONS = 'folderConditions', // sub-collection of folders
   FOLDER_REDIRECTS = 'folderRedirects',
   FOLDERS = 'folders',
@@ -18,6 +19,7 @@ export enum FirestoreCollection {
   NEWS = 'news',
   METADATA = 'metadata', // sub-collection of docs
   PAYPAL_TRANSACTIONS = 'paypal-transactions',
+  PAYPAL_THANKED = 'paypal-thanked',
   QUOTES = 'quotes',
   REMOVALS = 'removals',
   RETREATS = 'retreats',
@@ -26,6 +28,7 @@ export enum FirestoreCollection {
   SETTINGS = 'settings',
   SHORT_LINKS = 'shortLinks',
   STRIPE_CHARGES = 'stripe-charges',
+  STRIPE_THANKED = 'stripe-thanked',
   SUBTITLES = 'subtitles', // sub-collection of docs
   TOPICS = 'topics',
   TOPICS_POTENTIAL = 'topics-potential',
