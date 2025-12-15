@@ -30,6 +30,7 @@ export enum FirestoreCollection {
   STRIPE_CHARGES = 'stripe-charges',
   STRIPE_THANKED = 'stripe-thanked',
   SUBTITLES = 'subtitles', // sub-collection of docs
+  TEXTTRACKS = 'texttracks', // sub-collection of videos
   TOPICS = 'topics',
   TOPICS_POTENTIAL = 'topics-potential',
   TRANSIENTS = 'transients',
