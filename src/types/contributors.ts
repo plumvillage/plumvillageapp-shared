@@ -3,7 +3,7 @@ export type FeaturedContributor = {
   roleIds: string[], // refers to ID from 'roles' collection
 }
 
-type ContributorReservedKeys = 'id' | 'slug' | 'website' | 'createdAt' | 'updatedAt';
+type ContributorReservedKeys = 'id' | 'slug' | 'website' | 'profileRoleIds' | 'defaultDocumentRoleIds' | 'createdAt' | 'updatedAt';
 
 type ContributorBase<SupportedLanguageCodeType extends string | number | symbol> = {
   [key in Exclude<SupportedLanguageCodeType, ContributorReservedKeys>]?: string;
@@ -14,17 +14,23 @@ export type Contributor<SupportedLanguageCodeType extends string | number | symb
   id: string;
   slug: string;
   website?: string; // Website URL
+  profileRoleIds?: string[];
+  defaultDocumentRoleIds?: string[];
   createdAt: TimestampLike;
   updatedAt: TimestampLike;
 } & ContributorBase<SupportedLanguageCodeType>;
 
-export type ContributorRole<TimestampLike = unknown>  = {
+export type ContributorRole<SupportedLanguageCodeType extends string | number | symbol, TimestampLike = unknown> = {
   id: string,
-  name: string,
+  // Transitional: top-level English name. Will be migrated per-role via the admin app
+  // into the localized sub-objects below.
+  name?: string,
   description: string,
+  profileOnly?: boolean,
   createdAt: TimestampLike,
   updatedAt: TimestampLike,
-};
+  en: { name: string },
+} & Omit<Partial<{ [key in SupportedLanguageCodeType]: { name: string } }>, 'en'>;
 
 export type ContributorStrings<SupportedLanguageCodeType extends string | number | symbol, TimestampLike = unknown> = {
   // The language code is the document ID, but we must store it in the document as well.
