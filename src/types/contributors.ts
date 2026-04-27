@@ -19,6 +19,7 @@ export type Contributor<SupportedLanguageCodeType extends string | number | symb
   profileRoleIds?: string[];
   defaultDocumentRoleIds?: string[];
   roleVariationPreference?: ContributorRoleVariationKey;
+  hasImage?: boolean;
   createdAt: TimestampLike;
   updatedAt: TimestampLike;
 } & ContributorBase<SupportedLanguageCodeType>;
