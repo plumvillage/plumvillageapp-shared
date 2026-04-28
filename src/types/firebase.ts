@@ -30,6 +30,9 @@ export enum FirestoreCollection {
   STRIPE_CHARGES = 'stripe-charges',
   STRIPE_THANKED = 'stripe-thanked',
   SUBTITLES = 'subtitles', // sub-collection of docs
+  SUBTITLE_VIDEOS = 'subtitle-videos',
+  SUBTITLE_VERSIONS = 'versions', // sub-collection of subtitle-videos
+  SUBTITLING = 'subtitling', // sub-collection of users
   TEXTTRACKS = 'texttracks', // sub-collection of videos
   TOPICS = 'topics',
   TOPICS_POTENTIAL = 'topics-potential',
@@ -75,6 +78,9 @@ export const firestoreCollectionDocs = {
     },
     settings: {
       app: 'app',
-    }
+    },
+    subtitling: {
+      application: 'application',
+    },
   }
 };

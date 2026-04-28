@@ -20,3 +20,6 @@ const adminPermissionMap: { [key in AdminPermission]: true } = {
 export function isAdminPermission(value: unknown): value is AdminPermission {
   return typeof value === 'string' && (value in adminPermissionMap);
 }
+
+export const userClaims = [...adminPermissions, 'subtitle_contributor'] as const;
+export type UserClaim = typeof userClaims[number];
