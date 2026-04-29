@@ -3,6 +3,7 @@ export type SubtitleVideo<TimestampLike = unknown> = {
   title: string;
   youtubeId?: string;
   internalVideoId?: string;
+  amaraVideoId?: string;
   createdAt: TimestampLike;
   addedBy: string | null;
 };
