@@ -4,6 +4,7 @@ export type SubtitleVideo<TimestampLike = unknown> = {
   youtubeId?: string;
   internalVideoId?: string;
   amaraVideoId?: string;
+  languages: string[];  // derived — updated via arrayUnion when a new language version is written
   createdAt: TimestampLike;
   addedBy: string | null;
 };
