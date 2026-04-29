@@ -16,8 +16,8 @@ export type SubtitleVersion<TimestampLike = unknown> = {
   vttContent: string;
   status: SubtitleVersionStatus;
   source: SubtitleVersionSource;
-  authorUid: string | null;
-  authorEmail: string | null;
+  authorUid: string | null;       // Firebase UID — set for our own users
+  amaraAuthorId: string | null;   // Amara user ID — set for migrated contributions
   versionNumber: number;
   createdAt: TimestampLike;
   updatedAt: TimestampLike;
@@ -25,6 +25,14 @@ export type SubtitleVersion<TimestampLike = unknown> = {
   approvedBy: string | null;
   ytCaptionId: string | null;
   editLock: { uid: string; email: string; lockedAt: TimestampLike } | null;
+};
+
+export type AmaraUser = {
+  amaraId: string;
+  username: string;
+  fullName: string;
+  matchedFirebaseUid: string | null;
+  [key: string]: unknown; // raw Amara API fields stored verbatim
 };
 
 export type SubtitlerApplication<TimestampLike = unknown> = {
