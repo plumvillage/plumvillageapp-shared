@@ -4,6 +4,8 @@ export type SubtitleVideo<TimestampLike = unknown> = {
   youtubeId?: string;
   internalVideoId?: string;
   amaraVideoId?: string;
+  amaraMigrated?: boolean;
+  youtubeChannelId?: string;
   languages: string[];  // derived — updated via arrayUnion when a new language version is written
   createdAt: TimestampLike;
   addedBy: string | null;
@@ -27,6 +29,14 @@ export type SubtitleVersion<TimestampLike = unknown> = {
   approvedBy: string | null;
   ytCaptionId: string | null;
   editLock: { uid: string; email: string; lockedAt: TimestampLike } | null;
+};
+
+export type YouTubeChannel = {
+  id: string;          // Firestore doc ID — same as YouTube channel ID e.g. "UCytzR1tkUYoF5DjGYiYkhGQ"
+  name: string;        // Display name e.g. "Plum Village App"
+  handle: string;      // YouTube handle e.g. "@plumvillageapp"
+  youtubeUrl: string;  // e.g. "https://www.youtube.com/@plumvillageapp"
+  type?: 'main' | 'shorts'; // e.g. "UUytzR1tkUYoF5DjGYiYkhGQ" is shorts variant of "UCytzR1tkUYoF5DjGYiYkhGQ"
 };
 
 export type AmaraUser = {

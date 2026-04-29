@@ -1,6 +1,7 @@
 export enum FirestoreCollection {
   ACTIVITY_LOGS = 'activity-logs',
   AMARA_USERS = 'amara-users',
+  YOUTUBE_CHANNELS = 'youtube-channels',
   CATEGORIES = 'categories',
   CONTRIBUTOR_STRINGS = 'strings', // sub-collection of contributors
   CONTRIBUTORS = 'contributors',
