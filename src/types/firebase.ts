@@ -1,5 +1,6 @@
 export enum FirestoreCollection {
   ACTIVITY_LOGS = 'activity-logs',
+  AMARA_USERS = 'amara-users',
   CATEGORIES = 'categories',
   CONTRIBUTOR_STRINGS = 'strings', // sub-collection of contributors
   CONTRIBUTORS = 'contributors',
@@ -42,7 +43,7 @@ export enum FirestoreCollection {
   USER_ACTIVITIES = 'activities', // sub-collection of users
   USER_FAVORITES = 'favorites', // sub-collection of users
   USER_PLAYLISTS = 'playlists', // sub-collection of users
-  USER_SETTINGS = 'settings', // sub-collection of users
+  USER_SETTINGS = 'settings', // sub-collection of users (this duplicates SETTINGS above - oops too late)
   VIDEOS = 'videos',
 }
 
