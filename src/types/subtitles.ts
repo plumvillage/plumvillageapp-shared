@@ -36,7 +36,6 @@ export type YouTubeChannel = {
   name: string;        // Display name e.g. "Plum Village App"
   handle: string;      // YouTube handle e.g. "@plumvillageapp"
   youtubeUrl: string;  // e.g. "https://www.youtube.com/@plumvillageapp"
-  type?: 'main' | 'shorts'; // e.g. "UUytzR1tkUYoF5DjGYiYkhGQ" is shorts variant of "UCytzR1tkUYoF5DjGYiYkhGQ"
 };
 
 export type AmaraUser = {
@@ -47,9 +46,17 @@ export type AmaraUser = {
   [key: string]: unknown; // raw Amara API fields stored verbatim
 };
 
+export type Subtitler<TimestampLike = unknown> = {
+  uid: string;
+  displayName: string;  // publicly shown on contributions
+  languages: string[];
+  joinedAt: TimestampLike;
+};
+
 export type SubtitlerApplication<TimestampLike = unknown> = {
   email: string;
-  name: string;
+  name: string; // real name preferred, between the user and us
+  displayName: string; // publically visible display name, can be a pseudonym
   languages: string[];
   notes: string;
   submittedAt: TimestampLike;

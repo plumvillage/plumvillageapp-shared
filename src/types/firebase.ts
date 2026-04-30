@@ -34,6 +34,7 @@ export enum FirestoreCollection {
   SUBTITLES = 'subtitles', // sub-collection of docs
   SUBTITLE_VIDEOS = 'subtitle-videos',
   SUBTITLE_VERSIONS = 'versions', // sub-collection of subtitle-videos
+  SUBTITLERS = 'subtitlers',
   SUBTITLING = 'subtitling', // sub-collection of users
   TEXTTRACKS = 'texttracks', // sub-collection of videos
   TOPICS = 'topics',
