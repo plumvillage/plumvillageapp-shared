@@ -11,7 +11,7 @@ export type SubtitleVideo<TimestampLike = unknown> = {
   addedBy: string | null;
 };
 
-export type SubtitleVersionStatus = 'draft' | 'finished' | 'approved';
+export type SubtitleVersionStatus = 'draft' | 'finished' | 'review' | 'approved';
 export type SubtitleVersionSource = 'migration' | 'youtube' | 'editor';
 
 export type SubtitleVersion<TimestampLike = unknown> = {
