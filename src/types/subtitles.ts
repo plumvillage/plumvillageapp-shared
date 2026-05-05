@@ -27,8 +27,7 @@ export type SubtitleVersion<TimestampLike = unknown> = {
   updatedAt: TimestampLike;
   approvedAt: TimestampLike | null;
   approvedBy: string | null;
-  ytCaptionId: string | null;
-  editLock: { uid: string; email: string; lockedAt: TimestampLike } | null;
+  editLock: { uid: string; lockedAt: TimestampLike } | null;
 };
 
 export type YouTubeChannel = {
