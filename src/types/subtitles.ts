@@ -27,6 +27,7 @@ export type SubtitleVersion<TimestampLike = unknown> = {
   updatedAt: TimestampLike;
   approvedAt: TimestampLike | null;
   approvedBy: string | null;
+  reviewNotes?: string | null;
   editLock: { uid: string; lockedAt: TimestampLike } | null;
 };
 
