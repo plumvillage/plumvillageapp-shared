@@ -29,6 +29,7 @@ export type SubtitleVersion<TimestampLike = unknown> = {
   approvedBy: string | null;
   reviewNotes?: string | null;
   editLock: { uid: string; lockedAt: TimestampLike } | null;
+  youtubeSyncedAt?: TimestampLike | null;
 };
 
 export type YouTubeChannel = {
@@ -36,6 +37,7 @@ export type YouTubeChannel = {
   name: string;        // Display name e.g. "Plum Village App"
   handle: string;      // YouTube handle e.g. "@plumvillageapp"
   youtubeUrl: string;  // e.g. "https://www.youtube.com/@plumvillageapp"
+  dataApi?: boolean;
 };
 
 export type AmaraUser = {
