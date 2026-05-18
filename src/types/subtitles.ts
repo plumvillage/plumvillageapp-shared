@@ -8,7 +8,6 @@ export type SubtitleVideo<TimestampLike = unknown> = {
   youtubeChannelId?: string;
   languages: string[];  // derived — updated via arrayUnion when a new language version is written
   createdAt: TimestampLike;
-  addedBy: string | null;
 };
 
 export type SubtitleVersionStatus = 'draft' | 'finished' | 'review' | 'approved';
