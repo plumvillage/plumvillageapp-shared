@@ -1,6 +1,8 @@
 export enum FirestoreCollection {
   ACTIVITY_LOGS = 'activity-logs',
   AMARA_USERS = 'amara-users',
+  ART_SOURCES = 'art-sources', // Base illustration PNGs used to create art bundles.
+  ART_BUNDLES = 'art-bundles', // Named crop recipes for artwork.
   YOUTUBE_CHANNELS = 'youtube-channels',
   CATEGORIES = 'categories',
   CONTRIBUTOR_STRINGS = 'strings', // sub-collection of contributors
