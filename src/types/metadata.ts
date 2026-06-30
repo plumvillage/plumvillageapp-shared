@@ -3,5 +3,6 @@ export type MetadataType <SupportedLanguageCodeType extends string | number | sy
   slug: string,
   updatedAt?: FieldValueLike,
   lastUpdatedBy?: 'ADMIN' | 'BATCH_TRANSLATION_SYNC' | 'BATCH_TOPICS_GENERATE',
+  artBundleSlug?: string, // ref → ArtBundle.slug
   en: { singular: string, plural?: string}
 } & Omit<Partial<{ [key in SupportedLanguageCodeType] : {singular: string, plural?: string} }>, 'en'>;
