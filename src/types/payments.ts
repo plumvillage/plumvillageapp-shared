@@ -12,6 +12,10 @@ export type PaymentObj = {
   status: string,
   isSubscription: boolean,
   platform: 'stripe' | 'paypal',
+  paymentMethod: string, // e.g. card, ideal or link for Stripe, and paypal for PayPal
+  // What the donor actually paid, when in a different currency from ours (Stripe Adaptive Pricing)
+  paidAmount?: number,
+  paidCurrency?: string,
 };
 
 
@@ -64,6 +68,7 @@ export const loadPayPalPaymentRecord = (id: string, transactionData: PaypalTrans
   status: transactionData.transaction_info.transaction_status,
   isSubscription: transactionData.transaction_info.paypal_reference_id_type === 'SUB' || transactionData.transaction_info.transaction_event_code === 'T0002',
   platform: 'paypal',
+  paymentMethod: 'paypal',
 });
 
 export type StripeChargeData = { 
@@ -94,7 +99,15 @@ export type StripeChargeData = {
     },
   } | null,
   receipt_email?: string,
+  payment_method_details?: { type: string } | null,
+  // Only on charges imported since Stripe added Adaptive Pricing presentment details in 2025
+  presentment_details?: { presentment_amount: number, presentment_currency: string } | null,
 };
+
+// Stripe amounts are in minor units, which some currencies (e.g. JPY) don't have
+const fromStripeAmount = (amount: number, currency: string): number => amount / 10 ** (
+  new Intl.NumberFormat('en-US', { style: 'currency', currency }).resolvedOptions().maximumFractionDigits ?? 2
+);
 
 export const isStripeSubscriptionCharge = (chargeData: StripeChargeData): boolean => {
   const line = chargeData.invoice?.lines.data[0];
@@ -107,17 +120,27 @@ type TimestampStatic = {
   fromMillis(ms: number): { toDate(): Date };
 };
 
-export const loadStripePaymentRecord = (id: string, chargeData: StripeChargeData, Timestamp: TimestampStatic): PaymentObj => ({
-  id,
-  paymentDate: Timestamp.fromMillis(chargeData.created * 1000).toDate().toISOString(),
-  email: chargeData.billing_details.email || chargeData.invoice?.customer_email || chargeData.receipt_email || '',
-  customerName: chargeData.billing_details.name || chargeData.invoice?.customer_name || '',
-  countryCode: chargeData.billing_details.address.country,
-  amount: chargeData.amount / 100,
-  currency: chargeData.currency.toUpperCase() as 'USD' | 'GBP' | 'EUR',
-  description: (chargeData.invoice && chargeData.invoice.lines.data[0].description)
+export const loadStripePaymentRecord = (id: string, chargeData: StripeChargeData, Timestamp: TimestampStatic): PaymentObj => {
+  const presentment = chargeData.presentment_details;
+  const paidInOtherCurrency = presentment && presentment.presentment_currency !== chargeData.currency;
+
+  return {
+    id,
+    paymentDate: Timestamp.fromMillis(chargeData.created * 1000).toDate().toISOString(),
+    email: chargeData.billing_details.email || chargeData.invoice?.customer_email || chargeData.receipt_email || '',
+    customerName: chargeData.billing_details.name || chargeData.invoice?.customer_name || '',
+    countryCode: chargeData.billing_details.address.country,
+    amount: chargeData.amount / 100,
+    currency: chargeData.currency.toUpperCase() as 'USD' | 'GBP' | 'EUR',
+    description: (chargeData.invoice && chargeData.invoice.lines.data[0].description)
         || chargeData.statement_descriptor,
-  status: chargeData.status,
-  isSubscription: isStripeSubscriptionCharge(chargeData),
-  platform: 'stripe',
-});
+    status: chargeData.status,
+    isSubscription: isStripeSubscriptionCharge(chargeData),
+    platform: 'stripe',
+    paymentMethod: chargeData.payment_method_details?.type ?? '',
+    ...(paidInOtherCurrency ? {
+      paidAmount: fromStripeAmount(presentment.presentment_amount, presentment.presentment_currency),
+      paidCurrency: presentment.presentment_currency.toUpperCase(),
+    } : {}),
+  };
+};
