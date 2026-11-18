@@ -2,8 +2,8 @@
 // the sangha properties below. Transcribed from Plumline's docs and OpenAPI spec. Comments marked
 // "In practice" describe the live data (October 2026), when every sangha used a 'text' schedule,
 // not a documented guarantee.
-// Docs: https://new.plumline.org/developers/api/
-// OpenAPI spec: https://new.plumline.org/developers/api/openapi-v1.yaml
+// Docs: https://plumline.org/developers/api/
+// OpenAPI spec: https://plumline.org/developers/api/openapi-v1.yaml
 
 /** An ordinal within the month: 1 is the first, -1 the last. */
 export type SanghaSetPosition = -1 | 1 | 2 | 3 | 4 | 5;
@@ -29,8 +29,8 @@ export type SanghaRecurrenceRule = {
 };
 
 /**
- * One regular meeting. For a 'text' schedule these fields are partially parsed hints, not a
- * calculable schedule; show Sangha.meetingDescription instead.
+ * One regular meeting. For a 'text' schedule Plumline's docs say these rows aren't the schedule
+ * and may be out of date, and to show Sangha.meetingDescription instead.
  */
 export type SanghaMeeting = {
   /** Local wall-clock start, YYYY-MM-DDTHH:mm, in `timezone`. In practice null for 'text' schedules. */
