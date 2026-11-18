@@ -85,11 +85,22 @@ export type StripeChargeData = {
     lines: {
       data: Array<{
         description: string,
-        type: string,
+        // Older charges have only `type`, charges imported at Stripe API 2025-03-31.basil or later have only
+        // `parent.type`, and those imported in between have both, as Stripe added `parent` to all API versions
+        // https://docs.stripe.com/changelog/basil/2025-03-31/adds-new-parent-field-to-invoicing-objects
+        type?: string,
+        parent?: { type: string } | null,
       }>,
     },
-  }
+  } | null,
   receipt_email?: string,
+};
+
+export const isStripeSubscriptionCharge = (chargeData: StripeChargeData): boolean => {
+  const line = chargeData.invoice?.lines.data[0];
+
+  return ['subscription', 'recurring'].includes(line?.type ?? '')
+    || line?.parent?.type === 'subscription_item_details';
 };
 
 type TimestampStatic = {
@@ -107,7 +118,6 @@ export const loadStripePaymentRecord = (id: string, chargeData: StripeChargeData
   description: (chargeData.invoice && chargeData.invoice.lines.data[0].description)
         || chargeData.statement_descriptor,
   status: chargeData.status,
-  isSubscription: Boolean(chargeData.invoice
-        && ['subscription', 'recurring'].includes(chargeData.invoice.lines.data[0].type)),
+  isSubscription: isStripeSubscriptionCharge(chargeData),
   platform: 'stripe',
 });
