@@ -25,6 +25,11 @@ Then, in the codebase you want to use this package in, run:
 yalc add @plumvillage/plumvillageapp-shared
 ```
 
+### Tests
+
+Run the tests with `yarn test`. They run on pull requests, and every merge to `main` releases a new minor version
+once they pass.
+
 ## How to use this code as a dependency
 To find out the available published versions(tags) of this repo, navigate to [this repo's published tags](https://github.com/plumvillage/plumvillageapp-shared/tags)
 Once you know which version you want, use the following command to add it to dependencies 

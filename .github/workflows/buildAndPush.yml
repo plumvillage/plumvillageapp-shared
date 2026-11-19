@@ -28,6 +28,10 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
+      # Don't release if the tests fail
+      - name: Run tests
+        run: yarn test
+
       # Build the project
       - name: Build project
         run: yarn build
@@ -50,7 +54,7 @@ jobs:
           npm version $NEW_VERSION --no-git-tag-version
           echo "VERSION=$NEW_VERSION" >> $GITHUB_ENV
           git add package.json
-          git commit -m "chore: release v${{ env.VERSION }} [skip ci]"
+          git commit -m "chore: release v$NEW_VERSION [skip ci]"
           git push
 
       - name: Create GitHub release
